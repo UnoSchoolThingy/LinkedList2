@@ -1,3 +1,8 @@
+/* Uno Pasadhika 
+ * Linked lists 2: a continuation of student list but with linked lists and auto sort thingy
+ * 1/26/2023 
+ */ 
+
 #include <iostream>
 #include "Node.h"
 #include "Utils.h"
@@ -5,7 +10,7 @@
 using namespace std;
 
 // Insert a student 
-bool insertStudent(Node*& listHead, Node* prev, Node* curr, Node* newNode) { // do dis later (currently broken)
+bool insertStudent(Node*& listHead, Node* prev, Node* curr, Node* newNode) {
   // If the list is empty 
   if (listHead == nullptr) {
     listHead = newNode;
@@ -45,17 +50,33 @@ bool promptAddStudent(Node*& listHead) {
   cin >> gpa;
   Node* newNode = new Node(new Student(in, in2, id, gpa));
   return insertStudent(listHead, nullptr, listHead, newNode);
-  return false;
 }
 
+// Print the entire list of students 
 void printList(Node* listHead) {
   if (listHead == nullptr) return;
   listHead->getStudent()->print();
   printList(listHead->getNext());
 }
 
-void deleteStudent(Node* listhead) {
-  cout << "Pretend we are deleting a student xd" << endl;
+// Delete a student by ID 
+bool deleteStudent(Node*& listHead, Node* prev, Node* curr, int id) {
+  if (curr == nullptr) return false;
+  if (curr->getStudent()->getID() == id) {
+    if (prev != nullptr) prev->setNext(curr->getNext());
+    else listHead = curr->getNext();
+    delete curr;
+    return true;
+  }
+  return deleteStudent(listHead, curr, curr->getNext(), id);
+}
+
+// Prompt the user for an ID of a student to delete 
+bool promptDeleteStudent(Node*& listHead) {
+  cout << "Enter the ID to delete: ";
+  int id;
+  cin >> id;
+  return deleteStudent(listHead, nullptr, listHead, id);
 }
 
 int main() {
@@ -67,7 +88,7 @@ int main() {
     try {
       if (Utils::chkcmd(in, "add")) cout << (promptAddStudent(listHead) ? "Added!" : "Couldn't add, student with the same ID already exists!") << endl;
       else if (Utils::chkcmd(in, "print")) printList(listHead);
-      else if (Utils::chkcmd(in, "delete")) deleteStudent(listHead);
+      else if (Utils::chkcmd(in, "delete")) cout << (promptDeleteStudent(listHead) ? "Deleted!" : "Couldn't delete, there was no student with that ID!") << endl;
       else if (Utils::chkcmd(in, "quit")) break;
       else cout << "That command isn't recognized!\n";
     }
