@@ -79,6 +79,7 @@ bool promptDeleteStudent(Node*& listHead) {
   return deleteStudent(listHead, nullptr, listHead, id);
 }
 
+// Get the average GPA 
 float getInsaneAverage(Node* curr, float sum, int num) {
   if (curr == nullptr) return sum / (float)num;
   return getInsaneAverage(curr->getNext(), sum + curr->getStudent()->getGPA(), num + 1);
@@ -92,7 +93,10 @@ int main() {
     cin >> in;
     try {
       if (Utils::chkcmd(in, "add")) cout << (promptAddStudent(listHead) ? "Added!" : "Couldn't add, student with the same ID already exists!") << endl;
-      else if (Utils::chkcmd(in, "print")) printList(listHead);
+      else if (Utils::chkcmd(in, "print")) {
+	if (listHead == nullptr) cout << "Couldn't print the list because it's empty!" << endl;
+	else printList(listHead);
+      }
       else if (Utils::chkcmd(in, "delete")) cout << (promptDeleteStudent(listHead) ? "Deleted!" : "Couldn't delete, there was no student with that ID!") << endl;
       else if (Utils::chkcmd(in, "average")) {
 	if (listHead == nullptr) cout << "Couldn't display average, the list is empty!";
