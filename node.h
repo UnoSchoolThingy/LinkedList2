@@ -5,16 +5,7 @@
 
 #include <iostream>
 #include <cstring>
-
-class Student {
-public:
-	char firstName[50];
-	char lastName[50];
-	int ID;
-	float GPA;
-
-	Student(char*, char*, int, float); //prototype
-};
+#include "Student.h"
 
 class Node {
 private:

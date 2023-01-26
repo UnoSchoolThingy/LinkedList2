@@ -4,17 +4,29 @@
 
 using namespace std;
 
-bool insertStudent(Node*& listHead, Node* newNode) { // do dis later (currently broken)
+// Insert a student 
+bool insertStudent(Node*& listHead, Node* prev, Node* curr, Node* newNode) { // do dis later (currently broken)
+  // If the list is empty 
   if (listHead == nullptr) {
     listHead = newNode;
     return true;
   }
-  if (listHead->getStudent()->getID() == newNode->getStudent()->getID()) return false;
-  if (listHead->getStudent()->getID() > newNode->getStudent()->getID()) {
-    Node* oldHead = listHead;
-    listHead = newNode;
-    newNode->setNext(oldHead);
+  // If we reached the end of the list 
+  if (curr == nullptr) {
+    prev->setNext(newNode);
+    return true;
   }
+  // Linear ID search
+  int currID = curr->getStudent()->getID();
+  int newID = newNode->getStudent()->getID();
+  if (currID == newID) return false;
+  if (currID > newID) {
+    if (prev != nullptr) prev->setNext(newNode);
+    else listHead = newNode;
+    newNode->setNext(curr);
+    return true;
+  }
+  return insertStudent(listHead, curr, curr->getNext(), newNode);
 }
 
 // Prompt the user to add a student 
@@ -32,7 +44,7 @@ bool promptAddStudent(Node*& listHead) {
   cout << "Enter GPA: ";
   cin >> gpa;
   Node* newNode = new Node(new Student(in, in2, id, gpa));
-  return insertStudent(listHead, newNode);
+  return insertStudent(listHead, nullptr, listHead, newNode);
   return false;
 }
 
@@ -53,7 +65,7 @@ int main() {
     cout << "Enter command (ADD, PRINT, DELETE, or QUIT): ";
     cin >> in;
     try {
-      if (Utils::chkcmd(in, "add")) promptAddStudent(listHead);
+      if (Utils::chkcmd(in, "add")) cout << (promptAddStudent(listHead) ? "Added!" : "Couldn't add, student with the same ID already exists!") << endl;
       else if (Utils::chkcmd(in, "print")) printList(listHead);
       else if (Utils::chkcmd(in, "delete")) deleteStudent(listHead);
       else if (Utils::chkcmd(in, "quit")) break;
