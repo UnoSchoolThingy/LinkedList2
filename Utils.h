@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstring>
 
-// Utilities and stuff 
+// Utilities and stuff (actually just one)
 struct Utils {
   // Check if a string is equal to a certain command 
   static bool chkcmd(const char* a, const char* b) {
