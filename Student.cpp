@@ -11,6 +11,10 @@ int Student::getID() {
   return this->id;
 }
 
+float Student::getGPA() {
+  return this->gpa;
+}
+
 void Student::print() {
   std::cout << '[' << id << "] " << firstname << ' ' << lastname << " (" << std::fixed << std::setprecision(2) << gpa << ")\n";
 }

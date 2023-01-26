@@ -14,5 +14,6 @@ class Student {
  public:
   Student(char* firstname, char* lastname, int id, float gpa);
   int getID();
+  float getGPA();
   void print();
 };
